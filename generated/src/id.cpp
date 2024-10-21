@@ -13,3 +13,9 @@ IDGenerator* IDGenerator::getInstance() {
 size_t IDGenerator::getNextID() {
     return ++currentID;
 }
+
+void IDGenerator::deleteInstance() {
+    if (instance != nullptr) {
+        delete instance;
+    }
+}

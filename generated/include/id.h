@@ -18,6 +18,7 @@ public:
 
     static IDGenerator* getInstance();
     size_t getNextID();
+    static void deleteInstance();
 };
 
 #endif

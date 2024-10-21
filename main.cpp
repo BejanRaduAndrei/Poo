@@ -2,6 +2,7 @@
 #include <cart.h>
 #include <product.h>
 #include <iostream>
+#include <id.h>
 #include <random>
 #include <assert.h>
 
@@ -71,4 +72,5 @@ int main() {
     testRemoving(user);
     testTotalPrice(user);
     testClearing(user);
+    IDGenerator::deleteInstance();
 }
