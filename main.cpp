@@ -1,57 +1,74 @@
+#include <user.h>
+#include <cart.h>
+#include <product.h>
 #include <iostream>
-#include <array>
+#include <random>
+#include <assert.h>
 
-#include <Helper.h>
+void testAdding(User &user) {
+    size_t prevLength = user.getCartSize();
+    user.addToCart(Product(100, "Coffee"), 5);
+    assert(user.getCartSize() == prevLength + 1);
+}
+
+void testRemoving(User &user) {
+    size_t prevLength = user.getCartSize();
+    user.removeFromCart(100);
+    assert(user.getCartSize() == prevLength - 1);
+}
+
+void testClearing(User &user) {
+    user.clearCart();
+    assert(user.getCartSize() == 0);
+}
+
+void testTotalPrice(User &user) {
+    double price = user.getTotalPrice();
+    assert(price >= 0);
+}
+
+void testUser() {
+    User user = User("John Doe", "", "");
+    assert(user.getName() == "John Doe");
+    assert(user.getEmail() == "");
+    assert(user.getAddress() == "");
+    assert(user.getPhoneNumber() == "");
+    user.updateProfile("John Doe", "john.doe@gmail.com", "New York", "014124212421");
+    assert(user.getName() == "John Doe");
+    assert(user.getEmail() == "john.doe@gmail.com");
+    assert(user.getAddress() == "New York");
+    assert(user.getPhoneNumber() == "014124212421");
+}
+
+void testCopyConstructorShopping() {
+    ShoppingCart cart;
+    cart.addProduct(Product(100, "Coffee"), 5);
+    ShoppingCart cart2(cart);
+    assert(cart2.getCartSize() == 1);
+}
+
+void testCopyAssignmentShopping() {
+    ShoppingCart cart;
+    cart.addProduct(Product(100, "Coffee"), 5);
+    ShoppingCart cart2;
+    cart2 = cart;
+    assert(cart2.getCartSize() == 1);
+}
 
 int main() {
-    std::cout << "Hello, world!\n";
-    std::array<int, 100> v{};
-    int nr;
-    std::cout << "Introduceți nr: ";
-    /////////////////////////////////////////////////////////////////////////
-    /// Observație: dacă aveți nevoie să citiți date de intrare de la tastatură,
-    /// dați exemple de date de intrare folosind fișierul tastatura.txt
-    /// Trebuie să aveți în fișierul tastatura.txt suficiente date de intrare
-    /// (în formatul impus de voi) astfel încât execuția programului să se încheie.
-    /// De asemenea, trebuie să adăugați în acest fișier date de intrare
-    /// pentru cât mai multe ramuri de execuție.
-    /// Dorim să facem acest lucru pentru a automatiza testarea codului, fără să
-    /// mai pierdem timp de fiecare dată să introducem de la zero aceleași date de intrare.
-    ///
-    /// Pe GitHub Actions (bife), fișierul tastatura.txt este folosit
-    /// pentru a simula date introduse de la tastatură.
-    /// Bifele verifică dacă programul are erori de compilare, erori de memorie și memory leaks.
-    ///
-    /// Dacă nu puneți în tastatura.txt suficiente date de intrare, îmi rezerv dreptul să vă
-    /// testez codul cu ce date de intrare am chef și să nu pun notă dacă găsesc vreun bug.
-    /// Impun această cerință ca să învățați să faceți un demo și să arătați părțile din
-    /// program care merg (și să le evitați pe cele care nu merg).
-    ///
-    /////////////////////////////////////////////////////////////////////////
-    std::cin >> nr;
-    /////////////////////////////////////////////////////////////////////////
-    for(int i = 0; i < nr; ++i) {
-        std::cout << "v[" << i << "] = ";
-        std::cin >> v[i];
+    testUser();
+    testCopyConstructorShopping();
+    testCopyAssignmentShopping();
+    srand(0);
+    std::vector<Product> products = Product::readProductsFromStdin();
+    User user = User("John Doe", "john.doe@gmail.com", "password");
+    user.updateProfile("John Doe", "john.doe@gmail.com", "New York", "014124212421");
+    for(int i = 0; i < 5; ++i) {
+        user.addToCart(products.at(i), rand() % 5);
     }
-    std::cout << "\n\n";
-    std::cout << "Am citit de la tastatură " << nr << " elemente:\n";
-    for(int i = 0; i < nr; ++i) {
-        std::cout << "- " << v[i] << "\n";
-    }
-    ///////////////////////////////////////////////////////////////////////////
-    /// Pentru date citite din fișier, NU folosiți tastatura.txt. Creați-vă voi
-    /// alt fișier propriu cu ce alt nume doriți.
-    /// Exemplu:
-    /// std::ifstream fis("date.txt");
-    /// for(int i = 0; i < nr2; ++i)
-    ///     fis >> v2[i];
-    ///
-    ///////////////////////////////////////////////////////////////////////////
-    ///                Exemplu de utilizare cod generat                     ///
-    ///////////////////////////////////////////////////////////////////////////
-    Helper helper;
-    helper.help();
-    ///////////////////////////////////////////////////////////////////////////
-    return 0;
+    std::cout << user << '\n';
+    testAdding(user);
+    testRemoving(user);
+    testTotalPrice(user);
+    testClearing(user);
 }
