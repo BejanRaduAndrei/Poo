@@ -5,10 +5,11 @@
 #include <vector>
 #include <category.h>
 
-Product::Product(size_t id, const std::string &name) {
+Product::Product(size_t id, const std::string &name, size_t price) {
   this->id = id;
   this->name = name;
   this->category = UNKNOWN;
+  this->price = price;
 }
 
 Product::Product(size_t id, const std::string &name,

@@ -1,5 +1,5 @@
 #include <user.h>
-#include <cart.h>
+#include <cart/shoppingCart.h>
 #include <product.h>
 #include <iostream>
 #include <id.h>
@@ -8,7 +8,7 @@
 
 void testAdding(User &user) {
     size_t prevLength = user.getCartSize();
-    user.addToCart(Product(100, "Coffee"), 5);
+    user.addToCart(Product(100, "Coffee", 10), 5);
     assert(user.getCartSize() == prevLength + 1);
 }
 
@@ -43,17 +43,25 @@ void testUser() {
 
 void testCopyConstructorShopping() {
     ShoppingCart cart;
-    cart.addProduct(Product(100, "Coffee"), 5);
+    cart.addProduct(Product(100, "Coffee", 10), 5);
     ShoppingCart cart2(cart);
     assert(cart2.getCartSize() == 1);
 }
 
 void testCopyAssignmentShopping() {
     ShoppingCart cart;
-    cart.addProduct(Product(100, "Coffee"), 5);
+    cart.addProduct(Product(100, "Coffee", 10), 5);
     ShoppingCart cart2;
     cart2 = cart;
     assert(cart2.getCartSize() == 1);
+}
+
+void testDiscount() {
+    ShoppingCart cart;
+    cart.addProduct(Product(100, "Coffee", 10), 5);
+    assert(cart.totalPrice() == 50);
+    cart.applyDiscount(0.1);
+    assert(cart.totalPrice() == 45);
 }
 
 int main() {
@@ -72,5 +80,5 @@ int main() {
     testRemoving(user);
     testTotalPrice(user);
     testClearing(user);
-    IDGenerator::deleteInstance();
+    testDiscount();
 }

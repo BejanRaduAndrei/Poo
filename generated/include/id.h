@@ -2,23 +2,21 @@
 #define __ID_H__
 
 #include <stdlib.h>
+#include <memory>
 
 class IDGenerator {
 private:
-    static IDGenerator* instance;
+    static std::unique_ptr<IDGenerator> instance;
     size_t currentID;
 
-    // Private constructor to prevent instantiation
-    IDGenerator() : currentID(0) {}
-
 public:
+    IDGenerator() : currentID(0) {}
     // Delete copy constructor and assignment operator
     IDGenerator(const IDGenerator&) = delete;
     IDGenerator& operator=(const IDGenerator&) = delete;
 
     static IDGenerator* getInstance();
     size_t getNextID();
-    static void deleteInstance();
 };
 
 #endif

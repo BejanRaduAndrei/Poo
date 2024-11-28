@@ -1,21 +1,16 @@
 #include <id.h>
-
+#include <memory>
+#include <stdio.h>
 // Initialize the static member
-IDGenerator* IDGenerator::instance = nullptr;
+std::unique_ptr<IDGenerator> IDGenerator::instance = nullptr;
 
 IDGenerator* IDGenerator::getInstance() {
     if (instance == nullptr) {
-        instance = new IDGenerator();
+        instance = std::make_unique<IDGenerator>();
     }
-    return instance;
+    return instance.get();
 }
 
 size_t IDGenerator::getNextID() {
     return ++currentID;
-}
-
-void IDGenerator::deleteInstance() {
-    if (instance != nullptr) {
-        delete instance;
-    }
 }

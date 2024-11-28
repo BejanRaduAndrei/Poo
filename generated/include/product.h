@@ -24,7 +24,7 @@ class Product {
   Dimensions dimensions;
 
 public:
-  Product(size_t, const std::string &);
+  Product(size_t, const std::string &, size_t);
   // Expected to be called when reading all the data about products
   // from a file or database
   Product(size_t, const std::string &, const std::string &, Category &,

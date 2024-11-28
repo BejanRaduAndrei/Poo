@@ -29,6 +29,15 @@ void User::removeFromCart(const long long productId) {
     cart.removeProduct(productId);
 }
 
+void User::addToWishlist(const Product& product, long long quantity) {
+    wishlist.addProduct(product, quantity);
+}
+
+void User::removeFromWishlist(const long long productId) {
+    wishlist.removeProduct(productId);
+}
+
+
 void User::clearCart() {
     cart.clearCart();
 }

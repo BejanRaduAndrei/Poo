@@ -44,11 +44,13 @@ include(cmake/Options.cmake)
 # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here
 add_executable(${PROJECT_NAME}
     main.cpp
-    generated/src/cart.cpp
     generated/src/category.cpp
     generated/src/id.cpp
     generated/src/product.cpp
     generated/src/user.cpp
+    generated/src/cart/baseCart.cpp
+    generated/src/cart/shoppingCart.cpp
+    generated/src/cart/wishlistCart.cpp
 )
 
 include(cmake/CompilerFlags.cmake)
