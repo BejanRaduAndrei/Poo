@@ -90,7 +90,6 @@ std::vector<Product> Product::readProductsFromFile(const std::string &filename) 
             dimensions.width = std::stod(widthStr);
             dimensions.height = std::stod(heightStr);
         } catch (const std::invalid_argument& e) {
-            std::cout << "GRIM" << '\n';
             continue;
         }
 

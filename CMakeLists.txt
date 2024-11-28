@@ -51,6 +51,7 @@ add_executable(${PROJECT_NAME}
     generated/src/cart/baseCart.cpp
     generated/src/cart/shoppingCart.cpp
     generated/src/cart/wishlistCart.cpp
+    generated/src/payment/cardPayment.cpp
 )
 
 include(cmake/CompilerFlags.cmake)

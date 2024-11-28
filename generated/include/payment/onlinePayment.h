@@ -1,25 +1,23 @@
-#ifndef __CARD_PAYMENT_H__
-#define __CARD_PAYMENT_H__
+#ifndef __ONLINE_PAYMENT_H__
+#define __ONLINE_PAYMENT_H__
 
 #include "payment/payment.h"
 #include "exceptions/paymentError.h"
 #include <iostream>
 
-class CardPayment : public Payment {
+class OnlinePayment : public Payment {
     std::string cardNumber;
     size_t sum;
+
 public:
-    CardPayment(const std::string& cardNumber);
-    ~CardPayment();
+    OnlinePayment(const std::string &cardNumber) : cardNumber(cardNumber) {}
     void pay(double sum) override {
-        if (sum > 1000) {
-            throw InsufficientFundsException();
+        // Simulate a timeout
+        if (sum == 100) {
+            throw PaymentTimeoutException();
         }
         this->sum = sum;
         std::cout << "Paid " << sum << " with card " << cardNumber << std::endl;
-    }
-    const std::string& getCardNumber() {
-        return cardNumber;
     }
     void refund() override {
         std::cout << "Refunded " << sum << " to card " << cardNumber << std::endl;

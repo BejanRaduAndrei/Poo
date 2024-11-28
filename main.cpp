@@ -5,6 +5,12 @@
 #include <id.h>
 #include <random>
 #include <assert.h>
+#include <order.h>
+#include "payment/cardPayment.h"
+#include "payment/cashPayment.h"
+#include "payment/onlinePayment.h"
+
+const std::string CARD_NUMBER = "ABCDEF1234567890"; 
 
 void testAdding(User &user) {
     size_t prevLength = user.getCartSize();
@@ -64,6 +70,61 @@ void testDiscount() {
     assert(cart.totalPrice() == 45);
 }
 
+
+void testOrder(User &user, std::vector<Product> &p) {
+    ShoppingCart cart;
+    for(int i = 0; i < 5; ++i) {
+        cart.addProduct(p.at(i), rand() % 5);
+    }
+    Order order = Order(1, user, cart);
+    assert(order.getOrderId() == 1);
+    order.handlePayment(std::make_unique<CardPayment>(CARD_NUMBER));
+    assert(order.getStatus() == "Paid");
+    order.handleRefund();
+    assert(order.getStatus() == "Refunded");
+}
+
+void testPayment() {
+    try {
+        CardPayment cardPayment(CARD_NUMBER);
+        cardPayment.pay(100);
+        cardPayment.refund();
+        CashPayment cashPayment;
+        cashPayment.pay(50);
+        cashPayment.refund();
+        OnlinePayment onlinePayment("john.doe@gmail.com");
+        onlinePayment.pay(200);
+        onlinePayment.refund();
+        cardPayment.pay(1200);
+    } catch (const std::exception& e) {
+        if (const auto* invalidCard = dynamic_cast<const InvalidCardException*>(&e)) {
+            std::cout << "Invalid card exception: " << invalidCard->what() << '\n';
+        } else if (const auto* insufficientFunds = dynamic_cast<const InsufficientFundsException*>(&e)) {
+            std::cout << "Insufficient funds exception: " << insufficientFunds->what() << '\n';
+        } else if (const auto* paymentTimeout = dynamic_cast<const PaymentTimeoutException*>(&e)) {
+            std::cout << "Payment timeout exception: " << paymentTimeout->what() << '\n';
+        } else {
+            std::cout << "Unknown payment exception: " << e.what() << '\n';
+        }
+    }
+}
+
+void testDynamicCast(User& user, std::vector<Product>& p) {
+    ShoppingCart cart;
+    for(int i = 0; i < 2; ++i) {
+        cart.addProduct(p.at(i), rand() % 2);
+    }
+    Order order = Order(1, user, cart);
+    assert(order.getOrderId() == 1);
+    try {
+        order.handlePayment(std::make_unique<CardPayment>(CARD_NUMBER));
+        order.processSpecificPayment();    
+    } catch(std::exception& e) {
+        std::cout << e.what() << '\n';
+    }
+}
+
+
 int main() {
     testUser();
     testCopyConstructorShopping();
@@ -81,4 +142,7 @@ int main() {
     testTotalPrice(user);
     testClearing(user);
     testDiscount();
+    testPayment();
+    testOrder(user, products);
+    testDynamicCast(user, products);
 }

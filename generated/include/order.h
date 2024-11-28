@@ -8,47 +8,56 @@
 #include <string>
 #include <memory>
 #include "payment/payment.h"
+#include "payment/cardPayment.h"
+#include "payment/onlinePayment.h"
+#include "payment/cashPayment.h"
 
 class Order {
 private:
     int orderId;
     User user;
-    std::vector<std::pair<Product, int>> products;
-    double totalAmount;
+    ShoppingCart cart;
     std::string status;
-    std::unique_ptr<Payment> payment;
-    bool isPaid;
+    std::unique_ptr<Payment> paymentMethod;
 
 public:
-    Order(int orderId, const User& customer, const std::vector<std::pair<Product, int>>& products)
-        : orderId(orderId), user(customer), products(products), status("Pending") {
-        totalAmount = 0.0;
-        for (const auto& item : products) {
-            totalAmount += item.first.getPrice() * item.second;
-        }
-        this->payment = nullptr;
-        this->isPaid = false;
+    Order(int orderId, const User& customer, const ShoppingCart& cart)
+        : orderId(orderId), user(customer), cart(cart), status("Pending") {
+        this->paymentMethod = nullptr;
     }
 
     int getOrderId() const { return orderId; }
     User getUser() const { return user; }
-    std::vector<std::pair<Product, int>> getProducts() const { return products; }
-    double getTotalAmount() const { return totalAmount; }
-    std::string getStatus() const { return status; }
+    const ShoppingCart& getCart() const { return cart; }
+    double getTotalAmount() const { return cart.totalPrice(); }
+    const std::string& getStatus() const { return status; }
 
     void updateStatus(const std::string& newStatus) {
         status = newStatus;
     }
 
     void handlePayment(std::unique_ptr<Payment> payment) {
-        this->payment = std::move(payment);
-        this->payment->pay(totalAmount);
-        this->isPaid = true;
+        this->paymentMethod = std::move(payment);
+        this->paymentMethod->pay(cart.totalPrice());
+        status = "Paid";
     }
     void handleRefund() {
-        this->payment->refund(totalAmount);
-        this->isPaid = false;
+        this->paymentMethod->refund();
+        status = "Refunded";
     }
+
+    void processSpecificPayment() {
+        if (auto cardPayment = dynamic_cast<CardPayment*>(paymentMethod.get())) {
+            std::cout << "Processing card payment with card number: " << cardPayment->getCardNumber() << std::endl;
+        } else if (auto cashPayment = dynamic_cast<CashPayment*>(paymentMethod.get())) {
+            std::cout << "Processing cash payment." << std::endl;
+        } else if (auto onlinePayment = dynamic_cast<OnlinePayment*>(paymentMethod.get())) {
+            std::cout << "Processing online payment with email: " << user.getEmail() << std::endl;
+        } else {
+            std::cout << "Unknown payment method." << std::endl;
+        }
+    }
+    
 };
 
 #endif // ORDER_H
