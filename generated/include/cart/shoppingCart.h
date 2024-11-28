@@ -8,7 +8,7 @@ class ShoppingCart : public BaseCart {
 private:
     std::optional<double> discount;
 public:
-    ShoppingCart() = default;
+    ShoppingCart();
     ShoppingCart(const ShoppingCart& other) = default;
     ~ShoppingCart() = default;
     ShoppingCart& operator=(const ShoppingCart& other) noexcept = default;
