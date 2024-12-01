@@ -64,6 +64,7 @@
         "__hash_table": "cpp",
         "__node_handle": "cpp",
         "queue": "cpp",
-        "stack": "cpp"
+        "stack": "cpp",
+        "__locale": "cpp"
     }
 }

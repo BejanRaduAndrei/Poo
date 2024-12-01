@@ -4,6 +4,7 @@
 #include <string>
 #include <cart/shoppingCart.h>
 #include <cart/wishlistCart.h>
+#include <memory>
 
 class User {
     size_t id;
@@ -28,9 +29,9 @@ public:
     void updateProfile(const std::string& name, const std::string& email, const std::string& address, const std::string& phoneNumber);
     // newPassword is supposed to be hashed
     void changePassword(const std::string& newPassword);
-    void addToCart(const Product& product, long long quantity);
+    void addToCart(const std::shared_ptr<Product>& product, long long quantity);
     void removeFromCart(const long long productId);
-    void addToWishlist(const Product& product, long long quantity);
+    void addToWishlist(const std::shared_ptr<Product>& product, long long quantity);
     void removeFromWishlist(const long long productId);
     void clearCart();
     void clearWishlist();

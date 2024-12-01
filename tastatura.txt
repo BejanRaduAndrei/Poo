@@ -1,10 +1,10 @@
-1,Smartphone,High-end smartphone,ELECTRONICS,699.99,0.2,Samsung,6.1,2.8,0.3
-2,T-shirt,Cotton T-shirt,CLOTHING,19.99,0.3,Nike,0.0,0.0,0.0
-3,Blender,Kitchen blender,HOME_APPLIANCES,49.99,2.5,Philips,10.0,8.0,15.0
-4,Book,Science fiction novel,BOOKS,9.99,0.5,Random House,8.0,5.0,1.0
-5,Toy Car,Remote control car,TOYS,29.99,1.0,Hot Wheels,12.0,6.0,4.0
-6,Apple,Fresh red apple,GROCERIES,0.99,0.2,Local Farm,3.0,3.0,3.0
-7,Sofa,Comfortable sofa,FURNITURE,499.99,50.0,Ikea,80.0,35.0,30.0
-8,Football,Professional football,SPORTS,24.99,0.4,Adidas,9.0,9.0,9.0
-9,Lipstick,Matte lipstick,BEAUTY,14.99,0.1,Maybelline,0.5,0.5,3.0
-10,Car Battery,12V car battery,AUTOMOTIVE,89.99,15.0,Bosch,10.0,7.0,8.0
+1,The Great Gatsby,A classic novel,book,10.99,0.5,Scribner,8,5,1,F. Scott Fitzgerald, X, 9780743273565,
+2,T-Shirt,A comfortable t-shirt,clothing,19.99,0.2,BrandX,10,8,1,Large,Cotton, X
+3,MacBook Pro,A high-performance laptop,electronics,1299.99,4.0,Apple,14,9.7,0.6,16GB RAM,512GB SSD,Intel i7,
+4,Nike Running Shoes,Comfortable running shoes,sports,89.99,0.8,Nike,12,8,4,10,Mesh, AirForce, One
+5,Office Chair,Ergonomic office chair,furniture,199.99,15.0,Ikea,24,24,48,Adjustable,Black, Classic
+6,Harry Potter,A fantasy novel,book,9.99,0.6,Bloomsbury,8,5,1,J.K. Rowling,X, 9780747532743, 
+7,Jeans,Comfortable jeans,clothing,49.99,0.7,Levi's,12,8,1,32,Blue,Cotton
+8,Samsung Galaxy S21,Latest smartphone,electronics,799.99,0.5,Samsung,6.2,2.8,0.3,8GB RAM,128GB Storage,Exynos 2100,
+9,Basketball,Official size basketball,sports,29.99,0.6,Spalding,9.5,9.5,9.5,Size 7,Leather, Modern, Basic
+10,Bookshelf,Wooden bookshelf,furniture,149.99,20.0,Ikea,36,12,72,5 Shelves,Oak,Modern

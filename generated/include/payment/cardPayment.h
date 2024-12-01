@@ -12,6 +12,7 @@ public:
     CardPayment(const std::string& cardNumber);
     ~CardPayment();
     void pay(double sum) override {
+        // Simulate an exception
         if (sum > 1000) {
             throw InsufficientFundsException();
         }

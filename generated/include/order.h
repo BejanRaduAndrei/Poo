@@ -2,7 +2,7 @@
 #ifndef ORDER_H
 #define ORDER_H
 
-#include "product.h"
+#include "products/product.h"
 #include "user.h"
 #include <vector>
 #include <string>

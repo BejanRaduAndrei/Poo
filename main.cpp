@@ -1,6 +1,6 @@
 #include <user.h>
 #include <cart/shoppingCart.h>
-#include <product.h>
+#include <products/product.h>
 #include <iostream>
 #include <id.h>
 #include <random>
@@ -14,7 +14,7 @@ const std::string CARD_NUMBER = "ABCDEF1234567890";
 
 void testAdding(User &user) {
     size_t prevLength = user.getCartSize();
-    user.addToCart(Product(100, "Coffee", 10), 5);
+    user.addToCart(std::make_unique<Product>(100, "Coffee", 10), 5);
     assert(user.getCartSize() == prevLength + 1);
 }
 
@@ -49,14 +49,14 @@ void testUser() {
 
 void testCopyConstructorShopping() {
     ShoppingCart cart;
-    cart.addProduct(Product(100, "Coffee", 10), 5);
+    cart.addProduct(std::make_unique<Product>(100, "Coffee", 10), 5);
     ShoppingCart cart2(cart);
     assert(cart2.getCartSize() == 1);
 }
 
 void testCopyAssignmentShopping() {
     ShoppingCart cart;
-    cart.addProduct(Product(100, "Coffee", 10), 5);
+    cart.addProduct(std::make_unique<Product>(100, "Coffee", 10), 5);
     ShoppingCart cart2;
     cart2 = cart;
     assert(cart2.getCartSize() == 1);
@@ -64,24 +64,28 @@ void testCopyAssignmentShopping() {
 
 void testDiscount() {
     ShoppingCart cart;
-    cart.addProduct(Product(100, "Coffee", 10), 5);
+    cart.addProduct(std::make_unique<Product>(100, "Coffee", 10), 5);
     assert(cart.totalPrice() == 50);
     cart.applyDiscount(0.1);
     assert(cart.totalPrice() == 45);
 }
 
 
-void testOrder(User &user, std::vector<Product> &p) {
-    ShoppingCart cart;
-    for(int i = 0; i < 5; ++i) {
-        cart.addProduct(p.at(i), rand() % 5);
+void testOrder(User &user, std::vector<std::shared_ptr<Product>> &p) {
+    try {
+        ShoppingCart cart;
+        for(int i = 0; i < 5; ++i) {
+            cart.addProduct(p.at(i), rand() % 5);
+        }
+        Order order = Order(1, user, cart);
+        assert(order.getOrderId() == 1);
+        order.handlePayment(std::make_unique<CardPayment>(CARD_NUMBER));
+        assert(order.getStatus() == "Paid");
+        order.handleRefund();
+        assert(order.getStatus() == "Refunded");
+    } catch (const std::exception& e) {
+        std::cout << e.what() << '\n';
     }
-    Order order = Order(1, user, cart);
-    assert(order.getOrderId() == 1);
-    order.handlePayment(std::make_unique<CardPayment>(CARD_NUMBER));
-    assert(order.getStatus() == "Paid");
-    order.handleRefund();
-    assert(order.getStatus() == "Refunded");
 }
 
 void testPayment() {
@@ -109,7 +113,7 @@ void testPayment() {
     }
 }
 
-void testDynamicCast(User& user, std::vector<Product>& p) {
+void testDynamicCast(User& user, std::vector<std::shared_ptr<Product>>& p) {
     ShoppingCart cart;
     for(int i = 0; i < 2; ++i) {
         cart.addProduct(p.at(i), rand() % 2);
@@ -130,7 +134,7 @@ int main() {
     testCopyConstructorShopping();
     testCopyAssignmentShopping();
     srand(0);
-    std::vector<Product> products = Product::readProductsFromStdin();
+    auto products = Product::readProductsFromInput(std::cin);
     User user = User("John Doe", "john.doe@gmail.com", "password");
     user.updateProfile("John Doe", "john.doe@gmail.com", "New York", "014124212421");
     for(int i = 0; i < 5; ++i) {

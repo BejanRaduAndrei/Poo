@@ -3,11 +3,11 @@
 
 #include <list>
 
-#include <product.h>
+#include <products/product.h>
 #include <ctime>
 
 class BaseCart {
-    std::list<std::pair<Product, long long>> products;
+    std::list<std::pair<std::shared_ptr<Product>, size_t>> products;
     std::time_t createdAt;
     std::time_t updatedAt;
 public:
@@ -15,7 +15,7 @@ public:
     BaseCart(const BaseCart&);
     ~BaseCart();
     BaseCart& operator=(const BaseCart& other) noexcept;
-    void addProduct(const Product&, size_t);
+    void addProduct(const std::shared_ptr<Product>&, size_t);
     void removeProduct(const size_t id);
     void clearCart();
     size_t getCartSize() const;
