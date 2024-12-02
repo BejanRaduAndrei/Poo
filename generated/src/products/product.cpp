@@ -96,7 +96,8 @@ std::vector<std::shared_ptr<Product>> Product::readProductsFromInput(std::istrea
 			dimensions.length = std::stod(lengthStr);
 			dimensions.width = std::stod(widthStr);
 			dimensions.height = std::stod(heightStr);
-		} catch (const std::invalid_argument &e) {
+		} catch (const std::exception &e) {
+			std::cout << "Input error: " << e.what() << " ";
 			continue;
 		}
 

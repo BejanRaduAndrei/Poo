@@ -2,11 +2,14 @@
 #define __PAYMENT_ERROR_H__
 
 #include <stdexcept>
+#include <string>
+
 class PaymentException : public std::exception {
 private:
     std::string message;
 public:
     explicit PaymentException(const std::string& message) : message(message) {}
+    explicit PaymentException(const char* message): message(std::string(message)) {}
     const char* what() const noexcept override {
         return message.c_str();
     }
