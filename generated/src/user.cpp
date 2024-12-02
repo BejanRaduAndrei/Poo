@@ -26,14 +26,14 @@ User::~User()
 {
 }
 
-void User::updateProfile(const std::string &name, const std::string &email,
-			 const std::string &address,
-			 const std::string &phoneNumber)
+void User::updateProfile(const std::string &userName, const std::string &userEmail,
+			 const std::string &userAddress,
+			 const std::string &userPhoneNumber)
 {
-	this->name = name;
-	this->email = email;
-	this->address = address;
-	this->phoneNumber = phoneNumber;
+	this->name = userName;
+	this->email = userEmail;
+	this->address = userAddress;
+	this->phoneNumber = userPhoneNumber;
 }
 
 void User::changePassword(const std::string &newPassword)
