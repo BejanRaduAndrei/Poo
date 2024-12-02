@@ -6,9 +6,9 @@
 #include <random>
 #include <assert.h>
 #include <order.h>
-#include "payment/cardPayment.h"
-#include "payment/cashPayment.h"
-#include "payment/onlinePayment.h"
+#include <payment/cardPayment.h>
+#include <payment/cashPayment.h>
+#include <payment/onlinePayment.h>
 
 const std::string CARD_NUMBER = "ABCDEF1234567890"; 
 
