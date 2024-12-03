@@ -42,7 +42,6 @@ public:
     // Wishlist-related operations
     void addToWishlist(const std::shared_ptr<Product>& product, long long quantity);
     void removeFromWishlist(const long long productId);
-    void clearCart();
     void clearWishlist();
     double getTotalPrice() const;
     size_t getCartSize() const;
