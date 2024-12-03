@@ -6,31 +6,40 @@
 #include <cart/wishlistCart.h>
 #include <memory>
 
+// User class definition
 class User {
-    size_t id;
-    std::string name;
-    std::string email;
-    // Hashed password
-    std::string password;
-    std::string address;
-    std::string phoneNumber;
-    ShoppingCart cart;
-    WishlistCart wishlist;
-public:
-    User();
-    User(const std::string& name, const std::string& email, const std::string& password);
-    ~User();
+    size_t id;                     // User ID
+    std::string name;              // User name
+    std::string email;             // User email
+    std::string password;          // Hashed password
+    std::string address;           // User address
+    std::string phoneNumber;       // User phone number
+    ShoppingCart cart;             // User's shopping cart
+    WishlistCart wishlist;         // User's wishlist
 
+public:
+    User(); // Default constructor
+    User(const std::string& name, const std::string& email, const std::string& password); // Parameterized constructor
+    ~User(); // Destructor
+
+    // Getters for user information
     const std::string& getName() const;
     const std::string& getEmail() const;
     const std::string& getAddress() const;
     const std::string& getPhoneNumber() const;
 
+    // Update user profile details
     void updateProfile(const std::string& name, const std::string& email, const std::string& address, const std::string& phoneNumber);
-    // newPassword is supposed to be hashed
+
+    // Change user's password (newPassword should be hashed)
     void changePassword(const std::string& newPassword);
+
+    // Cart-related operations
     void addToCart(const std::shared_ptr<Product>& product, long long quantity);
     void removeFromCart(const long long productId);
+    void clearCart();
+
+    // Wishlist-related operations
     void addToWishlist(const std::shared_ptr<Product>& product, long long quantity);
     void removeFromWishlist(const long long productId);
     void clearCart();

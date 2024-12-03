@@ -1,27 +1,35 @@
 #ifndef __CARD_PAYMENT_H__
 #define __CARD_PAYMENT_H__
 
-#include "payment/payment.h"
-#include "exceptions/paymentError.h"
-#include <iostream>
+#include "payment/payment.h"         // Base Payment class header
+#include "exceptions/paymentError.h" // Exception classes for payment errors
+#include <iostream>                  // For std::cout
 
+// CardPayment class derived from Payment
 class CardPayment : public Payment {
-    std::string cardNumber;
-    size_t sum;
+    std::string cardNumber; // Card number for payment
+    size_t sum;             // Amount paid
+
 public:
-    CardPayment(const std::string& cardNumber);
-    ~CardPayment();
+    CardPayment(const std::string& cardNumber); // Constructor
+    ~CardPayment();                             // Destructor
+
+    // Override pay method for card payment
     void pay(double sum) override {
-        // Simulate an exception
+        // Simulate insufficient funds exception for large sums
         if (sum > 1000) {
             throw InsufficientFundsException();
         }
-        this->sum = sum;
+        this->sum = sum; // Store the amount paid
         std::cout << "Paid " << sum << " with card " << cardNumber << std::endl;
     }
+
+    // Get the card number
     const std::string& getCardNumber() {
         return cardNumber;
     }
+
+    // Override refund method for card payment
     void refund() override {
         std::cout << "Refunded " << sum << " to card " << cardNumber << std::endl;
     }
