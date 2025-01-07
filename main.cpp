@@ -17,6 +17,7 @@
 #include <pricing/priceCalculator.h>
 #include <inventory/inventory.h>
 #include <review/review.h>
+#include <visitor/alternativeVisitor.h>
 
 const std::string CARD_NUMBER = "ABCDEF1234567890"; 
 
@@ -272,6 +273,50 @@ void testLoyaltySystem(User& user) {
     std::cout << "Loyalty system test passed\n";
 }
 
+void testAlternativeVisitor() {
+    // Create test products
+    auto book = std::make_shared<Book>(1, "The Great Gatsby", "Classic novel", 29.99, 0.5,
+        "Scribner", Dimensions{20, 13, 2}, "F. Scott Fitzgerald", "Scribner", "978-0743273565");
+    
+    auto electronics = std::make_shared<Electronics>(2, "Smartphone", "High-end phone", 999.99, 0.3,
+        "TechCo", Dimensions{15, 7, 1}, "12 months", "Samsung", "ABC123");
+    
+    auto clothing = std::make_shared<Clothing>(3, "T-Shirt", "Cotton T-Shirt", 19.99, 0.2,
+        "Fashion Brand", Dimensions{30, 20, 2}, "M", "Cotton", "Blue");
+
+    // Create visitors
+    InsuranceValueCalculator insuranceCalc;
+    MarketingDescriptionGenerator marketingGen;
+
+    // Create variants
+    std::vector<ProductVariant> products = {
+        std::cref(*book),
+        std::cref(*electronics),
+        std::cref(*clothing)
+    };
+
+    // Test insurance calculations
+    for (const auto& product : products) {
+        double insurance = std::visit(insuranceCalc, product);
+        assert(insurance > 0.0); // Insurance should be positive
+    }
+
+    // Test marketing descriptions
+    for (const auto& product : products) {
+        std::string desc = std::visit(marketingGen, product);
+        assert(!desc.empty()); // Description shouldn't be empty
+    }
+
+    // Specific tests
+    double bookInsurance = std::visit(insuranceCalc, products[0]);
+    assert(bookInsurance == book->getPrice() * 0.1); // 10% for books
+
+    double electronicsInsurance = std::visit(insuranceCalc, products[1]);
+    assert(electronicsInsurance == electronics->getPrice() * 0.3); // 30% for electronics
+
+    std::cout << "Alternative visitor pattern test passed\n";
+}
+
 int main() {
     try {
         // Read products from input
@@ -333,6 +378,9 @@ int main() {
         std::cout << "\n=== Updated Cart Summary with Loyalty ===\n";
         std::cout << "Loyalty Points: " << user.getLoyaltyPoints() << std::endl;
         std::cout << "Loyalty Discount: " << (user.getLoyaltyDiscount() * 100) << "%" << std::endl;
+
+        std::cout << "\n=== Testing Alternative Visitor Pattern ===\n";
+        testAlternativeVisitor();
 
         std::cout << "\nAll tests passed successfully!\n";
 

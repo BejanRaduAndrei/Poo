@@ -28,6 +28,9 @@ public:
         static const std::string category = "Electronics";
         return category;
     }
+    const std::string& getBrand() const {
+        return brand;
+    }
 };
 
 #endif
