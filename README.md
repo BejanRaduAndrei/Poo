@@ -1,6 +1,7 @@
-# ShopSphere
+# ShopSphere - Sistem de Gestionare a Magazinului Online
 
-## Descriere proiect
+
+## Descriere Generală
 
 ShopSphere este o aplicație simplă și eficientă pentru gestionarea unui magazin online, care oferă o platformă ușor de utilizat atât pentru administratori, cât și pentru clienți. Aplicația este structurată pe mai multe module, fiecare având o funcționalitate bine definită, contribuind la crearea unei experiențe fluente în administrarea magazinului și efectuarea de tranzacții. Iată principalele componente ale aplicației:
 
@@ -39,6 +40,34 @@ ShopSphere este o aplicație simplă și eficientă pentru gestionarea unui maga
 ShopSphere își propune să ofere o platformă robustă și ușor de utilizat pentru administrarea unui magazin online, fiind un instrument eficient pentru gestionarea produselor, comenzilor, plăților și datelor clienților. Aplicația este scalabilă, astfel încât poate fi extinsă cu ușurință pentru a adăuga noi funcționalități, cum ar fi gestionarea stocurilor, integrări cu platforme de livrare și multe altele.
 
 Aplicația urmărește să faciliteze atât administrarea magazinului, cât și experiența clienților, oferind o soluție simplă și intuitivă pentru cumpărături online.
+
+### Noi Funcționalități Adăugate:
+
+1. **Sistem de Review-uri**
+   - Adăugare și gestionare recenzii pentru produse
+   - Calculul ratingului mediu
+   - Stocarea comentariilor utilizatorilor
+
+2. **Sistem de Inventar**
+   - Gestionarea stocului pentru produse
+   - Notificări pentru reaprovizionare
+   - Verificări de disponibilitate
+
+3. **Sistem de Loialitate**
+   - Acumulare puncte de loialitate
+   - Discount-uri bazate pe puncte
+   - Nivele diferite de reduceri
+
+4. **Alternative Visitor Pattern**
+   - Calculul valorilor de asigurare pentru diferite tipuri de produse
+   - Generare descrieri de marketing personalizate
+   - Implementare type-safe folosind std::variant
+
+5. **Template Method pentru Reduceri**
+   - Aplicare flexibilă a diferitelor tipuri de reduceri
+   - Combinare multiplă de reduceri
+   - Calculare automată a prețurilor finale
+
 
 ## Milestone #0
 
@@ -89,12 +118,18 @@ Aplicația urmărește să faciliteze atât administrarea magazinului, cât și 
 - [x] tag de `git`: de exemplu `v0.2`
 
 ## Milestone #3
-
 #### Cerințe
-- [ ] 2 șabloane de proiectare (design patterns)
-- [ ] o clasă șablon cu sens; minim **2 instanțieri**
-  - [ ] preferabil și o funcție șablon (template) cu sens; minim 2 instanțieri
-- [ ] tag de `git`: de exemplu `v0.3` sau `v1.0`
+- [x] 2 șabloane de proiectare (design patterns)
+   - Singleton Pattern: Implementat în clasa `IDGenerator` pentru generarea de ID-uri unice
+   - Strategy Pattern: Implementat în clasele de plată (`PaymentStrategy`) și reduceri (`DiscountStrategy`)
+   - Visitor Pattern - Alternative Visitor folosind std::variant pentru calculul asigurărilor și generarea descrierilor de marketing
+- [x] clase șablon cu sens  - `PriceCalculator<CartType>`: Calculează prețurile pentru diferite tipuri de coșuri
+    - Instanțiat pentru `ShoppingCart` și `WishlistCart`
+    - Include calculul de taxe, discount-uri și reduceri pentru cantități mari
+  - Funcții template în clasa `Order`:
+    - `applyDiscount<DiscountType>`: Aplică diferite tipuri de reduceri
+    - `applyDiscounts<...Discounts>`: Aplică multiple reduceri folosind parameter pack
 
 ## Resurse
-- adăugați trimiteri către resursele externe care v-au ajutat sau pe care le-ați folosit
+- [Refactoring Code](https://refactoring.guru/design-patterns/catalog)
+- [Stack Overflow](https://stackoverflow.com/questions/120876/what-are-the-rules-for-calling-the-base-class-constructor)
