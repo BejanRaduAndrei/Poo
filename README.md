@@ -129,6 +129,7 @@ Aplicația urmărește să faciliteze atât administrarea magazinului, cât și 
   - Funcții template în clasa `Order`:
     - `applyDiscount<DiscountType>`: Aplică diferite tipuri de reduceri
     - `applyDiscounts<...Discounts>`: Aplică multiple reduceri folosind parameter pack
+- [x]  tag de `git`: de exemplu `v0.3` sau `v1.0`
 
 ## Resurse
 - [Refactoring Code](https://refactoring.guru/design-patterns/catalog)
