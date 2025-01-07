@@ -317,6 +317,34 @@ void testAlternativeVisitor() {
     std::cout << "Alternative visitor pattern test passed\n";
 }
 
+void testOrderDiscounts(User& user) {
+    // Create a test order
+    ShoppingCart cart;
+    auto product = std::make_shared<Product>(1, "Test Product", "Description", 100.0, 1.0, "Test Corp", Dimensions{1,1,1});
+    cart.addProduct(product, 1);
+    
+    Order order(1, user, cart);
+    
+    // Create different types of discounts
+    SeasonalDiscount winterSale(0.2);  // 20% off
+    LoyaltyDiscount loyaltyDiscount;
+    
+    // Test individual discounts
+    double withSeasonal = order.applyDiscount(winterSale);
+    assert(withSeasonal == 80.0);  // 20% off 100
+    
+    // Add some loyalty points and test loyalty discount
+    user.addLoyaltyPoints(100.0);  // Should give 5% discount
+    double withLoyalty = order.applyDiscount(loyaltyDiscount);
+    assert(withLoyalty == 95.0);  // 5% off 100
+    
+    // Test applying multiple discounts
+    double withBoth = order.applyDiscounts(winterSale, loyaltyDiscount);
+    assert(withBoth < withSeasonal && withBoth < withLoyalty && withBoth == 76);
+    
+    std::cout << "Order discount template test passed\n";
+}
+
 int main() {
     try {
         // Read products from input
@@ -381,6 +409,9 @@ int main() {
 
         std::cout << "\n=== Testing Alternative Visitor Pattern ===\n";
         testAlternativeVisitor();
+
+        std::cout << "\n=== Testing Order Discounts ===\n";
+        testOrderDiscounts(user);
 
         std::cout << "\nAll tests passed successfully!\n";
 

@@ -65,7 +65,57 @@ public:
             std::cout << "Unknown payment method." << std::endl;
         }
     }
+
+    template<typename DiscountType>
+    double applyDiscount(const DiscountType& discount, double amount) {
+        double discountedAmount = discount.calculate(amount, user, cart);
+        
+        std::cout << "Applied " << discount.getName() << " discount: -$"
+                  << (amount - discountedAmount) << std::endl;
+                  
+        return discountedAmount;
+    }
+
+    template<typename DiscountType>
+    double applyDiscount(const DiscountType& discount) {
+        return applyDiscount(discount, getTotalAmount());
+    }
+
+    template<typename... Discounts>
+    double applyDiscounts(const Discounts&... discounts) {
+        double total = getTotalAmount();
+        ((total = applyDiscount(discounts, total)), ...);
+        return total;
+    }
+};
+
+// Add base discount strategy class
+class DiscountStrategy {
+public:
+    virtual double calculate(double amount, const User& user, const ShoppingCart& cart) const = 0;
+    virtual std::string getName() const = 0;
+    virtual ~DiscountStrategy() = default;
+};
+
+class SeasonalDiscount : public DiscountStrategy {
+    double percentage;
+public:
+    explicit SeasonalDiscount(double pct) : percentage(pct) {}
     
+    double calculate(double amount, const User&, const ShoppingCart&) const override {
+        return amount * (1.0 - percentage);
+    }
+    
+    std::string getName() const override { return "Seasonal"; }
+};
+
+class LoyaltyDiscount : public DiscountStrategy {
+public:
+    double calculate(double amount, const User& user, const ShoppingCart&) const override {
+        return amount * (1.0 - user.getLoyaltyDiscount());
+    }
+    
+    std::string getName() const override { return "Loyalty"; }
 };
 
 #endif // ORDER_H
