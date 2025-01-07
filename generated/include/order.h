@@ -19,13 +19,13 @@ private:
     User user;                              // User who placed the order
     ShoppingCart cart;                      // Shopping cart for the order
     std::string status;                     // Current order status
-    std::unique_ptr<Payment> paymentMethod; // Payment method used for the order
+    std::unique_ptr<PaymentStrategy> paymentStrategy; // PaymentStrategy method used for the order
 
 public:
     // Constructor
     Order(int orderId, const User& customer, const ShoppingCart& cart)
         : orderId(orderId), user(customer), cart(cart), status("Pending") {
-        this->paymentMethod = nullptr;
+        this->paymentStrategy = nullptr;
     }
 
     // Getters
@@ -41,25 +41,25 @@ public:
     }
 
     // Handle payment using a specific payment method
-    void handlePayment(std::unique_ptr<Payment> payment) {
-        this->paymentMethod = std::move(payment); // Set payment method
-        this->paymentMethod->pay(cart.totalPrice()); // Process payment
+    void handlePayment(std::unique_ptr<PaymentStrategy> payment) {
+        this->paymentStrategy = std::move(payment); // Set payment method
+        this->paymentStrategy->pay(cart.totalPrice()); // Process payment
         status = "Paid"; // Update status
     }
 
     // Handle refund for the order
     void handleRefund() {
-        this->paymentMethod->refund(); // Process refund
+        this->paymentStrategy->refund(); // Process refund
         status = "Refunded";           // Update status
     }
 
     // Process specific payment type with additional details
     void processSpecificPayment() {
-        if (auto cardPayment = dynamic_cast<CardPayment*>(paymentMethod.get())) {
+        if (auto cardPayment = dynamic_cast<CardPayment*>(paymentStrategy.get())) {
             std::cout << "Processing card payment with card number: " << cardPayment->getCardNumber() << std::endl;
-        } else if (auto cashPayment = dynamic_cast<CashPayment*>(paymentMethod.get())) {
+        } else if (auto cashPayment = dynamic_cast<CashPayment*>(paymentStrategy.get())) {
             std::cout << "Processing cash payment." << std::endl;
-        } else if (auto onlinePayment = dynamic_cast<OnlinePayment*>(paymentMethod.get())) {
+        } else if (auto onlinePayment = dynamic_cast<OnlinePayment*>(paymentStrategy.get())) {
             std::cout << "Processing online payment with email: " << user.getEmail() << std::endl;
         } else {
             std::cout << "Unknown payment method." << std::endl;

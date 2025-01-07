@@ -27,7 +27,7 @@ public:
 
 class PaymentTimeoutException : public PaymentException {
 public:
-    PaymentTimeoutException() : PaymentException("Payment process timed out") {}
+    PaymentTimeoutException() : PaymentException("PaymentStrategy process timed out") {}
 };
 
 

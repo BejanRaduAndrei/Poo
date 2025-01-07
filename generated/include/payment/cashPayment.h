@@ -4,7 +4,7 @@
 #include "payment/payment.h"
 #include <iostream>
 
-class CashPayment : public Payment {
+class CashPayment : public PaymentStrategy {
 	double sum;
 public:
 	CashPayment()

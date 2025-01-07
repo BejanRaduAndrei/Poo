@@ -5,7 +5,7 @@
 #include "exceptions/paymentError.h"
 #include <iostream>
 
-class OnlinePayment : public Payment {
+class OnlinePayment : public PaymentStrategy {
     std::string cardNumber;
     size_t sum;
 

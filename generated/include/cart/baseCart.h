@@ -29,6 +29,14 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const BaseCart& obj);
     // Calculate the total price of the cart
     virtual double totalPrice() const;
+
+    std::shared_ptr<Product> getProductById(size_t id) const {
+        for (const auto& pair: products) {
+            if (pair.first->getID() == id) {
+                return pair.first;
+            }
+        }
+    }
 };
 
 #endif

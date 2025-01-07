@@ -5,8 +5,8 @@
 #include "exceptions/paymentError.h" // Exception classes for payment errors
 #include <iostream>                  // For std::cout
 
-// CardPayment class derived from Payment
-class CardPayment : public Payment {
+// CardPayment class derived from PaymentStrategy
+class CardPayment : public PaymentStrategy {
     std::string cardNumber; // Card number for payment
     size_t sum;             // Amount paid
 

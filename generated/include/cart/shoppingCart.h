@@ -1,30 +1,40 @@
 #ifndef __SHOPPING_CART_H__
 #define __SHOPPING_CART_H__
 
-#include "cart/baseCart.h" // BaseCart class header
-#include <optional>        // For std::optional
+#include "cart/baseCart.h"
+#include <stdexcept>
+#include <chrono>
 
-// ShoppingCart class derived from BaseCart
 class ShoppingCart : public BaseCart {
-private:
-    std::optional<double> discount; // Optional discount percentage
+    static const size_t MAX_QUANTITY_PER_ITEM = 10;
+    static constexpr std::chrono::seconds EXPIRATION_TIME{1}; // Items expire after 30 minutes
+    std::chrono::system_clock::time_point lastUpdateTime;
 
 public:
-    ShoppingCart();                                    // Default constructor
-    ShoppingCart(const ShoppingCart& other) = default; // Copy constructor (default)
-    ~ShoppingCart() = default;                        // Destructor (default)
-    ShoppingCart& operator=(const ShoppingCart& other) noexcept = default; // Assignment operator (default)
+    ShoppingCart() = default;
+    ShoppingCart(const ShoppingCart& other) = default;
+    ~ShoppingCart() = default;
+    ShoppingCart& operator=(const ShoppingCart& other) noexcept = default;
 
-    // Apply a discount to the cart
-    void applyDiscount(double percentage);
-
-    // Override totalPrice to include discount calculation
-    double totalPrice() const {
-        double basePrice = BaseCart::totalPrice(); // Get total from base cart
-        if (this->discount.has_value()) {
-            return basePrice * (1 - this->discount.value()); // Apply discount
+    // Override addProduct to enforce quantity limit
+    void addProduct(const std::shared_ptr<Product>& product, size_t quantity) {
+        if (quantity > MAX_QUANTITY_PER_ITEM) {
+            throw std::runtime_error("Cannot add more than " + 
+                std::to_string(MAX_QUANTITY_PER_ITEM) + " units of the same product");
         }
-        return basePrice; // Return base price if no discount
+        lastUpdateTime = std::chrono::system_clock::now();
+        BaseCart::addProduct(product, quantity);
+    }
+
+    static size_t getMaxQuantityPerItem() { return MAX_QUANTITY_PER_ITEM; }
+
+    bool isExpired() const {
+        auto now = std::chrono::system_clock::now();
+        return std::chrono::duration_cast<std::chrono::seconds>(now - lastUpdateTime) > EXPIRATION_TIME;
+    }
+
+    void refreshExpiration() {
+        lastUpdateTime = std::chrono::system_clock::now();
     }
 };
 

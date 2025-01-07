@@ -5,6 +5,7 @@
 #include <tuple>
 #include <vector>
 #include <memory>
+#include <review/review.h>
 
 struct Dimensions {
 	float length;
@@ -20,6 +21,9 @@ class Product {
 	double weight;
 	std::string manufacturer;
 	Dimensions dimensions;
+	std::vector<Review> reviews;
+	double averageRating{0.0};
+	size_t totalReviews{0};
 
     public:
 	Product(size_t, const std::string &, size_t);
@@ -35,6 +39,10 @@ class Product {
 	{
 		return price;
 	}
+	const double getWeight() const
+	{
+		return weight;
+	}
 	virtual std::string generateDescription() const;
 	friend std::ostream &operator<<(std::ostream &os, const Product &obj);
 	static std::vector<std::shared_ptr<Product> >
@@ -42,6 +50,18 @@ class Product {
 	virtual std::string getCategory() const
 	{
 		return "Unknown";
+	}
+	void addReview(const Review& review) {
+		reviews.push_back(review);
+		updateAverageRating(review.getRating());
+	}
+	double getAverageRating() const { return averageRating; }
+	size_t getReviewCount() const { return totalReviews; }
+
+    private:
+	void updateAverageRating(unsigned newRating) {
+		averageRating = (averageRating * totalReviews + newRating) / (totalReviews + 1);
+		totalReviews++;
 	}
 };
 

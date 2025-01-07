@@ -1,12 +1,12 @@
 #ifndef __PAYMENT_H__
 #define __PAYMENT_H__
 
-class Payment {
+class PaymentStrategy {
 public:
-    Payment() {
+    PaymentStrategy() {
 
     }
-    virtual ~Payment() {
+    virtual ~PaymentStrategy() {
         
     }
     virtual void pay(double sum) = 0;

@@ -16,6 +16,8 @@ class User {
     std::string phoneNumber;       // User phone number
     ShoppingCart cart;             // User's shopping cart
     WishlistCart wishlist;         // User's wishlist
+    unsigned loyaltyPoints{0};     // User's loyalty points
+    static constexpr double POINTS_PER_DOLLAR = 10; // Points per dollar spent
 
 public:
     User(); // Default constructor
@@ -27,6 +29,10 @@ public:
     const std::string& getEmail() const;
     const std::string& getAddress() const;
     const std::string& getPhoneNumber() const;
+
+    ShoppingCart& getCart() {
+        return cart;
+    }
 
     // Update user profile details
     void updateProfile(const std::string& name, const std::string& email, const std::string& address, const std::string& phoneNumber);
@@ -43,10 +49,26 @@ public:
     void addToWishlist(const std::shared_ptr<Product>& product, long long quantity);
     void removeFromWishlist(const long long productId);
     void clearWishlist();
+    uint64_t getWishlistSize() const {
+        return wishlist.getCartSize();
+    }
     double getTotalPrice() const;
     size_t getCartSize() const;
     friend std::ostream& operator<<(std::ostream& os, const User& user);
     void saveToFile(const std::string& filename) const;    
+
+    // Loyalty points operations
+    void addLoyaltyPoints(double purchaseAmount) {
+        loyaltyPoints += static_cast<unsigned>(purchaseAmount * POINTS_PER_DOLLAR);
+    }
+
+    unsigned getLoyaltyPoints() const { return loyaltyPoints; }
+
+    double getLoyaltyDiscount() const {
+        return (loyaltyPoints >= 1000) ? 0.05 :  // 5% discount for 1000+ points
+               (loyaltyPoints >= 500) ? 0.03 :   // 3% discount for 500+ points
+               0.0;                              // No discount
+    }
 };
 
 #endif
