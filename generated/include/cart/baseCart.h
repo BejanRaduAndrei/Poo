@@ -36,6 +36,7 @@ public:
                 return pair.first;
             }
         }
+        return nullptr;
     }
 };
 
