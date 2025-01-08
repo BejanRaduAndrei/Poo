@@ -357,6 +357,7 @@ int main() {
         user.addToCart(products[0], 2);        // Add book
         user.addToCart(products[1], 1);        // Add smartphone
         user.addToWishlist(products[2], 1);    // Add t-shirt to wishlist
+        testTotalPrice(user);
 
         // Use PriceCalculator for shopping cart
         ShoppingCart& userCart = user.getCart();
